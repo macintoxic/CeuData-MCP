@@ -33,55 +33,26 @@ Claude Desktop / Cliente MCP
 
 ```json
 {
+  "ConnectionStrings": {
+    "production": "Server=sql-prod.company.com;Database=ecommerce;User Id=${SQL_PROD_USER};Password=${SQL_PROD_PASSWORD};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;",
+    "development": "Server=localhost;Database=ecommerce_dev;Integrated Security=true;Encrypt=false;Connection Timeout=15;",
+    "analytics": "Server=sql-analytics.company.com;Database=dwh;User Id=${SQL_ANALYTICS_USER};Password=${SQL_ANALYTICS_PASSWORD};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
+  },
   "DataSources": {
     "production": {
       "description": "SQL Server Production - Ecommerce",
-      "server": "sql-prod.company.com",
-      "port": 1433,
-      "database": "ecommerce",
-      "authentication": {
-        "type": "SqlServer",
-        "username": "${SQL_PROD_USER}",
-        "password": "${SQL_PROD_PASSWORD}"
-      },
-      "options": {
-        "encrypt": true,
-        "trustServerCertificate": false,
-        "connectionTimeout": 30,
-        "commandTimeout": 300
-      }
+      "connectionStringKey": "production",
+      "commandTimeout": 300
     },
     "development": {
       "description": "SQL Server Local Development",
-      "server": "localhost",
-      "port": 1433,
-      "database": "ecommerce_dev",
-      "authentication": {
-        "type": "IntegratedSecurity"
-      },
-      "options": {
-        "encrypt": false,
-        "connectionTimeout": 15,
-        "commandTimeout": 60
-      }
+      "connectionStringKey": "development",
+      "commandTimeout": 60
     },
     "analytics": {
       "description": "SQL Server Analytics - Data Warehouse",
-      "server": "sql-analytics.company.com",
-      "port": 1433,
-      "database": "dwh",
-      "authentication": {
-        "type": "AzureAD",
-        "tenantId": "${AZURE_TENANT_ID}",
-        "clientId": "${AZURE_CLIENT_ID}",
-        "clientSecret": "${AZURE_CLIENT_SECRET}"
-      },
-      "options": {
-        "encrypt": true,
-        "trustServerCertificate": false,
-        "connectionTimeout": 30,
-        "commandTimeout": 300
-      }
+      "connectionStringKey": "analytics",
+      "commandTimeout": 300
     }
   },
   "Logging": {
@@ -93,38 +64,45 @@ Claude Desktop / Cliente MCP
 }
 ```
 
-### Tipos de Autenticação Suportados
+### Connection String Format
 
-1. **IntegratedSecurity** (Windows Auth)
-   ```json
-   {
-     "type": "IntegratedSecurity"
-   }
+As connection strings suportam os seguintes formatos:
+
+1. **SQL Server Authentication** (user/password)
+   ```
+   Server=sql-prod.company.com;Database=ecommerce;User Id=${SQL_USER};Password=${SQL_PASSWORD};Encrypt=true;TrustServerCertificate=false;
    ```
 
-2. **SqlServer** (user/password)
-   ```json
-   {
-     "type": "SqlServer",
-     "username": "${SQL_USER}",
-     "password": "${SQL_PASSWORD}"
-   }
+2. **Integrated Security** (Windows Auth)
+   ```
+   Server=localhost;Database=ecommerce_dev;Integrated Security=true;Encrypt=false;
    ```
 
-3. **AzureAD** (Managed Identity / Service Principal)
-   ```json
-   {
-     "type": "AzureAD",
-     "tenantId": "${AZURE_TENANT_ID}",
-     "clientId": "${AZURE_CLIENT_ID}",
-     "clientSecret": "${AZURE_CLIENT_SECRET}"
-   }
+3. **Azure AD / Service Principal**
+   ```
+   Server=tcp:server.database.windows.net,1433;Database=ecommerce;Authentication=Active Directory Service Principal;User Id=${AZURE_CLIENT_ID};Password=${AZURE_CLIENT_SECRET};Encrypt=true;TrustServerCertificate=false;
    ```
 
 ### Variáveis de Ambiente
-- Todas as referências `${VAR}` são substituídas por variáveis de ambiente
-- Credenciais **nunca** devem ser hardcoded
-- Em produção, usar secrets management (Azure Key Vault, AWS Secrets Manager, etc.)
+
+Todas as referências `${VAR}` na connection string são substituídas por variáveis de ambiente em runtime:
+
+- `${SQL_PROD_USER}` → variável `SQL_PROD_USER`
+- `${SQL_PROD_PASSWORD}` → variável `SQL_PROD_PASSWORD`
+- `${AZURE_CLIENT_ID}` → variável `AZURE_CLIENT_ID`
+- `${AZURE_CLIENT_SECRET}` → variável `AZURE_CLIENT_SECRET`
+
+**Exemplo de .env (nunca commitar):**
+```
+SQL_PROD_USER=sa
+SQL_PROD_PASSWORD=P@ssw0rd123!
+SQL_ANALYTICS_USER=analytics_reader
+SQL_ANALYTICS_PASSWORD=SecurePass456!
+AZURE_CLIENT_ID=00000000-0000-0000-0000-000000000000
+AZURE_CLIENT_SECRET=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abc
+```
+
+Em produção, usar secrets management (Azure Key Vault, AWS Secrets Manager, etc.) para armazenar as variáveis de ambiente de forma segura.
 
 ---
 
@@ -564,19 +542,13 @@ Shutdown:
         "C:\\Projetos\\sharp-mssql-mcp",
         "--configuration",
         "Release"
-      ],
-      "env": {
-        "SQL_PROD_USER": "sa",
-        "SQL_PROD_PASSWORD": "${SQL_PROD_PASSWORD}",
-        "SQL_ANALYTICS_USER": "analytics_reader",
-        "AZURE_TENANT_ID": "${AZURE_TENANT_ID}",
-        "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID}",
-        "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET}"
-      }
+      ]
     }
   }
 }
 ```
+
+**Nota**: As variáveis de ambiente são carregadas do sistema operacional ou arquivo `.env` local. A configuração do `claude_desktop_config.json` é simples pois as credenciais já estão nas variáveis de ambiente.
 
 ---
 

@@ -46,17 +46,34 @@ dotnet publish -c Release -o ./publish
 
 ### Configuration
 
-Connection strings should be configured via:
-- **appsettings.json** (for development)
-- **Environment variables** (for production)
+Connection strings are configured in `appsettings.json` with multiple datasources. Sensitive values use environment variables:
 
 Example appsettings.json:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=master;Integrated Security=true;Encrypt=false;"
+    "production": "Server=sql-prod.company.com;Database=ecommerce;User Id=${SQL_PROD_USER};Password=${SQL_PROD_PASSWORD};Encrypt=true;",
+    "development": "Server=localhost;Database=ecommerce_dev;Integrated Security=true;Encrypt=false;"
+  },
+  "DataSources": {
+    "production": {
+      "description": "Production database",
+      "connectionStringKey": "production",
+      "commandTimeout": 300
+    },
+    "development": {
+      "description": "Development database",
+      "connectionStringKey": "development",
+      "commandTimeout": 60
+    }
   }
 }
+```
+
+Environment variables (e.g., `.env`):
+```
+SQL_PROD_USER=sa
+SQL_PROD_PASSWORD=SecurePassword123!
 ```
 
 ### Query Execution Best Practices
