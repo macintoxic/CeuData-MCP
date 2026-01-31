@@ -74,3 +74,4 @@ Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\obj\Debug\net10.0\refint\SharpMssq
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\obj\Debug\net10.0\SharpMssqlMcp.pdb
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\obj\Debug\net10.0\SharpMssqlMcp.genruntimeconfig.cache
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\obj\Debug\net10.0\ref\SharpMssqlMcp.dll
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\bin\Debug\net10.0\appsettings.json

@@ -161,3 +161,4 @@ Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\obj\Debug\net10.0\refint\Sha
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\obj\Debug\net10.0\SharpMssqlMcp.Tests.pdb
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\obj\Debug\net10.0\SharpMssqlMcp.Tests.genruntimeconfig.cache
 Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\obj\Debug\net10.0\ref\SharpMssqlMcp.Tests.dll
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\bin\Debug\net10.0\appsettings.json

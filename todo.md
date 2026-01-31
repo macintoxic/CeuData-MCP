@@ -39,11 +39,11 @@
   - [x] Define DataSourceConfig class
   - [x] Create appsettings.json with sample configuration
 
-- [ ] **STEP 6**: Environment Variable Substitution
-  - [ ] Create Services/EnvironmentSubstitutor.cs
-  - [ ] Implement ${VAR} pattern replacement
-  - [ ] Handle missing variables with clear error messages
-  - [ ] Unit test substitution logic
+- [x] **STEP 6**: Environment Variable Substitution
+  - [x] Create Services/EnvironmentSubstitutor.cs
+  - [x] Implement ${VAR} pattern replacement
+  - [x] Handle missing variables with clear error messages
+  - [x] Unit test substitution logic
 
 - [ ] **STEP 7**: Load Configuration on Startup
   - [ ] Use ConfigurationBuilder to load appsettings.json

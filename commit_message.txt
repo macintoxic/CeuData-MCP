@@ -1,6 +1,6 @@
-feat: add configuration models and sample appsettings.json
+feat: implement environment variable substitution service
 
-- Created AppConfig and DataSourceConfig models
-- Added sample appsettings.json with production, development, and analytics datasources
-- Updated project file to copy appsettings.json to output directory
-- Mapped configuration structure to technical specification
+- Created EnvironmentSubstitutor service with Regex-based ${VAR} replacement
+- Added error handling for missing environment variables
+- Implemented unit tests covering successful substitution, missing variables, and strings without variables
+- Verified all tests pass with dotnet test

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SharpMssqlMcp.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd0e25e500a04c0562bb13e33e1ea145fa8711eb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01adafd8b78492e7db43418d2a540ba6237ba6f1")]
 [assembly: System.Reflection.AssemblyProductAttribute("SharpMssqlMcp.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SharpMssqlMcp.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
