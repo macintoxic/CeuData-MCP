@@ -34,10 +34,10 @@
 ## ITERATION 2: CONFIGURATION SYSTEM
 
 ### Phase 3: Configuration & Environment Variables
-- [ ] **STEP 5**: Configuration Models
-  - [ ] Create Models/AppConfig.cs with ConnectionStrings and DataSources
-  - [ ] Define DataSourceConfig class
-  - [ ] Create appsettings.json with sample configuration
+- [x] **STEP 5**: Configuration Models
+  - [x] Create Models/AppConfig.cs with ConnectionStrings and DataSources
+  - [x] Define DataSourceConfig class
+  - [x] Create appsettings.json with sample configuration
 
 - [ ] **STEP 6**: Environment Variable Substitution
   - [ ] Create Services/EnvironmentSubstitutor.cs

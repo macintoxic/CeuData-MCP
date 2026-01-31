@@ -1,7 +1,6 @@
-feat: implement tool routing and Echo tool for verification
+feat: add configuration models and sample appsettings.json
 
-- Created IToolHandler interface and EchoToolHandler implementation
-- Refactored Program.cs to support MCP protocol methods (initialize, tools/list, tools/call)
-- Added JSON-RPC request/response integration with routing logic
-- Implemented tool registration system
-- Added basic protocol handshake support
+- Created AppConfig and DataSourceConfig models
+- Added sample appsettings.json with production, development, and analytics datasources
+- Updated project file to copy appsettings.json to output directory
+- Mapped configuration structure to technical specification
