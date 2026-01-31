@@ -15,12 +15,12 @@
   - [x] Write response to Console.Out
   - [x] Handle Ctrl+C gracefully
 
-- [ ] **STEP 3**: JSON-RPC 2.0 Models
-  - [ ] Create Models/JsonRpc.cs
-  - [ ] Implement JsonRpcRequest class (jsonrpc, method, params, id)
-  - [ ] Implement JsonRpcResponse class (jsonrpc, result, id)
-  - [ ] Implement JsonRpcError class (code, message, data)
-  - [ ] Add helper methods for creating responses
+- [x] **STEP 3**: JSON-RPC 2.0 Models
+  - [x] Create Models/JsonRpc.cs
+  - [x] Implement JsonRpcRequest class (jsonrpc, method, params, id)
+  - [x] Implement JsonRpcResponse class (jsonrpc, result, id)
+  - [x] Implement JsonRpcError class (code, message, data)
+  - [x] Add helper methods for creating responses
 
 ### Phase 2: MCP Protocol Verification
 - [ ] **STEP 4**: Echo Tool (Verification)

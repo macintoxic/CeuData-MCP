@@ -1,7 +1,6 @@
-feat: implement basic stdio loop and request processing
+feat: add JSON-RPC 2.0 models and helper methods
 
-- Added main loop in Program.cs using CancellationToken for graceful shutdown
-- Implemented Console.In reading and Console.Out writing
-- Added stderr redirection for logging to prevent stream corruption
-- Integrated basic JSON parsing and response handling
-- Handled Ctrl+C (Console.CancelKeyPress)
+- Defined JsonRpcRequest, JsonRpcResponse, and JsonRpcError models
+- Added JSON serialization attributes for compatibility
+- Implemented static helper methods Success() and Failure() for easy response creation
+- Placed models in Models/JsonRpc.cs
