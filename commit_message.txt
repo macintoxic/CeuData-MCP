@@ -1,8 +1,6 @@
-feat: add production features (retries, validation, datasource tool)
+feat: add docker-compose and sql setup for integration tests
 
-- Implemented get_datasources tool for datasource discovery and health monitoring
-- Added RetryPolicy with exponential backoff for transient SQL failures
-- Implemented RequestValidator to enforce safety limits on queries and procedures
-- Integrated retries into QueryExecutor and ProcedureExecutor
-- Integrated request validation into tool handlers
-- Completed ITERATION 6 of the implementation plan (except for Microsoft.Extensions.Logging transition)
+- Created docker-compose.yml for SQL Server 2022 instance
+- Added setup-test-db.sql with test schema, data, and procedures
+- Updated appsettings.json with 'test' datasource
+- Prepared infrastructure for ITERATION 7 integration tests

@@ -179,18 +179,11 @@
 ## ITERATION 7: TESTING INFRASTRUCTURE
 
 ### Phase 8: Test Database Setup
-- [ ] **STEP 24**: Create Docker Container for SQL Server
-  - [ ] Create docker-compose.yml (SQL Server 2022)
-  - [ ] Create Tests/setup-test-db.sql
-    - [ ] Create SharpMssqlMcpTest database
-    - [ ] Create Users table (5 sample users)
-    - [ ] Create Orders table (10 sample orders)
-    - [ ] Create stored procedures:
-      - [ ] sp_GetUserById (single result)
-      - [ ] sp_GetUserOrders (multiple results)
-      - [ ] sp_GetUserCount (output parameter)
-  - [ ] Update appsettings.json for Docker SQL Server
-  - [ ] Test: Container starts, healthcheck passes, database initializes
+- [x] **STEP 24**: Create Docker Container for SQL Server
+  - [x] Create docker-compose.yml (SQL Server 2022)
+  - [x] Create Tests/setup-test-db.sql
+  - [x] Update appsettings.json for Docker SQL Server
+  - [ ] Test: Container starts, healthcheck passes, database initializes (Manual/Scripted test needed)
 
 ### Phase 9: Integration Tests
 - [ ] **STEP 25**: Integration Tests - execute_query
