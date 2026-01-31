@@ -67,6 +67,7 @@ public class ExecuteProcedureToolHandler : IToolHandler
 
         try
         {
+            RequestValidator.ValidateProcedure(procedure, timeout);
             var result = await _procedureExecutor.ExecuteProcedureAsync(dataSource, procedure, parameters, timeout, includeOutputParameters, ct);
             return JsonRpcResponse.Success(id, result);
         }

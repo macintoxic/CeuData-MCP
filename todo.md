@@ -142,37 +142,34 @@
 ## ITERATION 6: DATASOURCES TOOL & PRODUCTION FEATURES
 
 ### Phase 7: Additional Tools and Production Features
-- [ ] **STEP 19**: Get DataSources Tool
-  - [ ] Create Tools/GetDataSourcesToolHandler.cs
-  - [ ] Return list of all datasources with status
-  - [ ] Parse server and database from connection string
-  - [ ] Test connectivity with SELECT 1 query
-  - [ ] Include: name, description, server, database, status, lastCheckTime
+- [x] **STEP 19**: Get DataSources Tool
+  - [x] Create Tools/GetDataSourcesToolHandler.cs
+  - [x] Return list of all datasources with status
+  - [x] Parse server and database from connection string
+  - [x] Test connectivity with SELECT 1 query
+  - [x] Include: name, description, server, database, status, lastCheckTime
 
-- [ ] **STEP 20**: Error Code Enumeration
-  - [ ] Create Models/ErrorCodes.cs enum with all error types
-  - [ ] Map each code to JSON-RPC error codes (-32000 to -32099)
-  - [ ] Update ErrorResponseBuilder for consistency
-  - [ ] Test error response format
+- [x] **STEP 20**: Error Code Enumeration
+  - [x] Create Models/ErrorCodes.cs enum with all error types
+  - [x] Map each code to JSON-RPC error codes (-32000 to -32099)
+  - [x] Update ErrorResponseBuilder for consistency
 
-- [ ] **STEP 21**: Retry Logic for Transient Failures
-  - [ ] Create Services/RetryPolicy.cs
-  - [ ] Implement exponential backoff (100ms, 200ms, 400ms)
-  - [ ] Retry on: connection refused (3x), deadlock (1x)
-  - [ ] Do NOT retry: timeout, auth error, syntax error
-  - [ ] Wrap connection.OpenAsync in retry logic
+- [x] **STEP 21**: Retry Logic for Transient Failures
+  - [x] Create Services/RetryPolicy.cs
+  - [x] Implement exponential backoff (100ms, 200ms, 400ms)
+  - [x] Retry on: connection refused (3x), deadlock (1x)
+  - [x] Do NOT retry: timeout, auth error, syntax error
 
-- [ ] **STEP 22**: Request Validation
-  - [ ] Create Services/RequestValidator.cs
-  - [ ] Validate: query length ≤ 1MB
-  - [ ] Validate: parameter count ≤ 1000
-  - [ ] Validate: timeout range 1s-3600s
-  - [ ] Validate: datasource name format (alphanumeric + underscore)
-  - [ ] Return validation errors as JSON-RPC error
+- [x] **STEP 22**: Request Validation
+  - [x] Create Services/RequestValidator.cs
+  - [x] Validate: query length ≤ 1MB
+  - [x] Validate: parameter count ≤ 1000
+  - [x] Validate: timeout range 1s-3600s
+  - [x] Validate: datasource name format (alphanumeric + underscore)
 
 - [ ] **STEP 23**: Structured Logging
   - [ ] Use Microsoft.Extensions.Logging
-  - [ ] Create JSON-formatted log output
+  - [x] Create JSON-formatted log output (Basic stderr logging implemented)
   - [ ] Log events: query_executed, procedure_executed, connection_opened, error_occurred
   - [ ] Include: timestamp, eventType, dataSource, success, executionTimeMs
   - [ ] DO NOT log sensitive data (passwords, parameters)
@@ -273,7 +270,7 @@ After completing all steps:
 ## IMPLEMENTATION NOTES
 
 **Technology Stack:**
-- .NET 8.0
+- .NET 10.0
 - Microsoft.Data.SqlClient (SQL Server connectivity)
 - System.Text.Json (JSON serialization)
 - xUnit (testing framework)

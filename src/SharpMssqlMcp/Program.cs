@@ -130,6 +130,7 @@ class Program
     private static void RegisterTools()
     {
         RegisterTool(new EchoToolHandler());
+        RegisterTool(new GetDataSourcesToolHandler(_config, _connectionManager!));
         if (_queryExecutor != null)
         {
             RegisterTool(new ExecuteQueryToolHandler(_queryExecutor));

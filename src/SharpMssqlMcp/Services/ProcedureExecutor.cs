@@ -27,7 +27,7 @@ public class ProcedureExecutor
         result.Metadata.ProcedureName = procedureName;
 
         using var connection = _connectionManager.GetConnection(dataSourceName);
-        await connection.OpenAsync(ct);
+        await RetryPolicy.ExecuteAsync(async () => await connection.OpenAsync(ct), ct);
 
         using var command = connection.CreateCommand();
         command.CommandText = procedureName;

@@ -1202,6 +1202,7 @@
         "dependencies": {
           "Microsoft.Data.SqlClient": "6.1.4",
           "Microsoft.Extensions.Configuration": "10.0.2",
+          "Microsoft.Extensions.Configuration.Binder": "10.0.2",
           "Microsoft.Extensions.Configuration.Json": "10.0.2",
           "Microsoft.Extensions.Logging": "10.0.2",
           "Microsoft.Extensions.Logging.Console": "10.0.2"

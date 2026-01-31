@@ -66,6 +66,7 @@ public class ExecuteQueryToolHandler : IToolHandler
 
         try
         {
+            RequestValidator.ValidateQuery(query, parameters, timeout);
             var result = await _queryExecutor.ExecuteQueryAsync(dataSource, query, parameters, maxRows, timeout, ct);
             return JsonRpcResponse.Success(id, result);
         }

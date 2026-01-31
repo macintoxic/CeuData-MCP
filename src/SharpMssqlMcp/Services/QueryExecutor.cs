@@ -26,7 +26,7 @@ public class QueryExecutor
         var sw = Stopwatch.StartNew();
 
         using var connection = _connectionManager.GetConnection(dataSourceName);
-        await connection.OpenAsync(ct);
+        await RetryPolicy.ExecuteAsync(async () => await connection.OpenAsync(ct), ct);
 
         using var command = connection.CreateCommand();
         command.CommandText = query;

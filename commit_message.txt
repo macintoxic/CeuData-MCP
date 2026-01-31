@@ -1,8 +1,8 @@
-feat: implement stored procedure execution tool
+feat: add production features (retries, validation, datasource tool)
 
-- Created ProcedureExecutor service supporting multiple result sets and output parameters
-- Implemented ExecuteProcedureToolHandler for MCP integration
-- Added support for capturing multiple data sets via SqlDataReader.NextResult()
-- Implemented output parameter and return value extraction
-- Registered execute_procedure tool in Program.cs
-- Completed ITERATION 5 of the implementation plan
+- Implemented get_datasources tool for datasource discovery and health monitoring
+- Added RetryPolicy with exponential backoff for transient SQL failures
+- Implemented RequestValidator to enforce safety limits on queries and procedures
+- Integrated retries into QueryExecutor and ProcedureExecutor
+- Integrated request validation into tool handlers
+- Completed ITERATION 6 of the implementation plan (except for Microsoft.Extensions.Logging transition)
