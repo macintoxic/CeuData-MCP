@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SharpMssqlMcp.Tests/SharpMssqlMcp.Tests.csproj" />
+    <Project Path="src/SharpMssqlMcp/SharpMssqlMcp.csproj" />
+  </Folder>
+</Solution>
