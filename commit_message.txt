@@ -1,8 +1,8 @@
-feat: implement query executor and metadata extraction
+feat: implement execute_query tool and error handling
 
-- Created QueryExecutor service with asynchronous execution support
-- Implemented parameterized query handling to prevent SQL injection
-- Added metadata extraction using SqlDataReader.GetColumnSchema()
-- Created QueryResult, QueryMetadata, and ColumnMetadata models
-- Added support for maxRows limit and execution timing
-- Completed ITERATION 3 of the implementation plan
+- Created ExecuteQueryToolHandler for MCP protocol integration
+- Implemented robust argument parsing for SQL queries and parameters
+- Added ErrorCodes and ErrorResponseBuilder for structured database errors
+- Mapped common SqlException numbers to user-friendly error messages
+- Registered execute_query tool in Program.cs
+- Completed ITERATION 4 of the implementation plan

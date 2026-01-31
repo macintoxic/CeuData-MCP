@@ -11,6 +11,7 @@ class Program
     private static readonly Dictionary<string, IToolHandler> _tools = new();
     private static AppConfig _config = new();
     private static ConnectionManager? _connectionManager;
+    private static QueryExecutor? _queryExecutor;
 
     static async Task Main(string[] args)
     {
@@ -27,6 +28,7 @@ class Program
         {
             LoadConfiguration();
             _connectionManager = new ConnectionManager(_config);
+            _queryExecutor = new QueryExecutor(_connectionManager);
             await ValidateConnectionsAsync();
             RegisterTools();
 
@@ -126,6 +128,10 @@ class Program
     private static void RegisterTools()
     {
         RegisterTool(new EchoToolHandler());
+        if (_queryExecutor != null)
+        {
+            RegisterTool(new ExecuteQueryToolHandler(_queryExecutor));
+        }
     }
 
     private static void RegisterTool(IToolHandler tool)
