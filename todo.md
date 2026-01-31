@@ -183,35 +183,35 @@
   - [x] Create docker-compose.yml (SQL Server 2022)
   - [x] Create Tests/setup-test-db.sql
   - [x] Update appsettings.json for Docker SQL Server
-  - [ ] Test: Container starts, healthcheck passes, database initializes (Manual/Scripted test needed)
+  - [x] Test: Container starts, healthcheck passes, database initializes
 
 ### Phase 9: Integration Tests
-- [ ] **STEP 25**: Integration Tests - execute_query
-  - [ ] Create Tests/ExecuteQueryToolTests.cs
-  - [ ] Test: Simple SELECT
-  - [ ] Test: Parameterized query
-  - [ ] Test: Empty result set
-  - [ ] Test: MaxRows limit
-  - [ ] Test: Invalid datasource error
-  - [ ] Test: SQL syntax error
-  - [ ] All tests use REAL SQL Server (no mocks)
+- [x] **STEP 25**: Integration Tests - execute_query
+  - [x] Create Tests/ExecuteQueryToolTests.cs
+  - [x] Test: Simple SELECT
+  - [x] Test: Parameterized query
+  - [x] Test: Empty result set
+  - [x] Test: MaxRows limit
+  - [x] Test: Invalid datasource error
+  - [x] Test: SQL syntax error
+  - [x] All tests use REAL SQL Server (no mocks)
 
-- [ ] **STEP 26**: Integration Tests - execute_procedure
-  - [ ] Create Tests/ExecuteProcedureToolTests.cs
-  - [ ] Test: Single result set
-  - [ ] Test: Multiple result sets
-  - [ ] Test: Output parameters
-  - [ ] Test: No result set (INSERT/UPDATE)
-  - [ ] Test: Invalid procedure name error
-  - [ ] All tests use REAL SQL Server
+- [x] **STEP 26**: Integration Tests - execute_procedure
+  - [x] Create Tests/ExecuteProcedureToolTests.cs
+  - [x] Test: Single result set
+  - [x] Test: Multiple result sets
+  - [x] Test: Output parameters
+  - [x] Test: No result set (INSERT/UPDATE)
+  - [x] Test: Invalid procedure name error
+  - [x] All tests use REAL SQL Server
 
-- [ ] **STEP 27**: Integration Tests - get_datasources
-  - [ ] Create Tests/GetDataSourcesToolTests.cs
-  - [ ] Test: List all datasources
-  - [ ] Test: Verify connection status
-  - [ ] Test: Test with offline datasource
-  - [ ] Test: Verify metadata parsing
-  - [ ] All tests use REAL SQL Server
+- [x] **STEP 27**: Integration Tests - get_datasources
+  - [x] Create Tests/GetDataSourcesToolTests.cs
+  - [x] Test: List all datasources
+  - [x] Test: Verify connection status
+  - [x] Test: Test with offline datasource
+  - [x] Test: Verify metadata parsing
+  - [x] All tests use REAL SQL Server
 
 ---
 

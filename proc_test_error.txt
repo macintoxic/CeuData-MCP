@@ -1,0 +1,38 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos est├úo atualizados para restaura├º├úo.
+  SharpMssqlMcp -> Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\bin\Debug\net10.0\SharpMssqlMcp.dll
+  SharpMssqlMcp.Tests -> Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\bin\Debug\net10.0\SharpMssqlMcp.Tests.dll
+Execu├º├úo de teste para Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\bin\Debug\net10.0\SharpMssqlMcp.Tests.dll (.NETCoreApp,Version=v10.0)
+Vers├úo do VSTest 18.0.1 (x64)
+
+Iniciando execu├º├úo de teste, espere...
+1 arquivos de teste no total corresponderam ao padr├úo especificado.
+[xUnit.net 00:00:00.37]     SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_MultipleResultSets_ReturnsData [FAIL]
+[xUnit.net 00:00:00.38]     SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_SingleResultSet_ReturnsData [FAIL]
+[xUnit.net 00:00:00.39]     SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_OutputParameters_ReturnsValues [FAIL]
+  Com falha SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_MultipleResultSets_ReturnsData [202 ms]
+  Mensagem de erro:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   JsonRpcError { Code = -32603, Data = { dataSource = "test", errorCode = "INTERNAL_ERROR", query = "sp_GetUserOrders", sqlError = "The formal parameter \"@userId\" was not declared "┬À┬À┬À }, Message = "Database query error" }
+  Rastreamento de pilha:
+     at SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_MultipleResultSets_ReturnsData() in Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\ExecuteProcedureToolTests.cs:line 77
+--- End of stack trace from previous location ---
+  Com falha SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_SingleResultSet_ReturnsData [9 ms]
+  Mensagem de erro:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   JsonRpcError { Code = -32603, Data = { dataSource = "test", errorCode = "INTERNAL_ERROR", query = "sp_GetUserById", sqlError = "The formal parameter \"@id\" was not declared as a"┬À┬À┬À }, Message = "Database query error" }
+  Rastreamento de pilha:
+     at SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_SingleResultSet_ReturnsData() in Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\ExecuteProcedureToolTests.cs:line 55
+--- End of stack trace from previous location ---
+  Com falha SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_OutputParameters_ReturnsValues [6 ms]
+  Mensagem de erro:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   JsonRpcError { Code = -32603, Data = { dataSource = "test", errorCode = "INTERNAL_ERROR", query = "sp_GetUserCount", sqlError = "The formal parameter \"@status\" was not declared "┬À┬À┬À }, Message = "Database query error" }
+  Rastreamento de pilha:
+     at SharpMssqlMcp.Tests.ExecuteProcedureToolTests.HandleAsync_OutputParameters_ReturnsValues() in Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp.Tests\ExecuteProcedureToolTests.cs:line 109
+--- End of stack trace from previous location ---
+
+Com falha! ÔÇô Com falha:     3, Aprovado:     0, Ignorado:     0, Total:     3, Dura├º├úo: 237 ms - SharpMssqlMcp.Tests.dll (net10.0)

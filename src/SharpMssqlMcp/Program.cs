@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using SharpMssqlMcp.Models;
 using SharpMssqlMcp.Services;

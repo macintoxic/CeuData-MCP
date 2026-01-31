@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rZButRM1um8=",
+  "dgSpecHash": "deC7HVJpPGs=",
   "success": true,
   "projectFilePath": "Z:\\Projetos\\sharp-mssql-mcp\\src\\SharpMssqlMcp\\SharpMssqlMcp.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration\\10.0.2\\microsoft.extensions.configuration.10.0.2.nupkg.sha512",
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.2\\microsoft.extensions.configuration.abstractions.10.0.2.nupkg.sha512",
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration.binder\\10.0.2\\microsoft.extensions.configuration.binder.10.0.2.nupkg.sha512",
+    "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration.environmentvariables\\10.0.2\\microsoft.extensions.configuration.environmentvariables.10.0.2.nupkg.sha512",
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\10.0.2\\microsoft.extensions.configuration.fileextensions.10.0.2.nupkg.sha512",
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.configuration.json\\10.0.2\\microsoft.extensions.configuration.json.10.0.2.nupkg.sha512",
     "C:\\Users\\macin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\10.0.2\\microsoft.extensions.dependencyinjection.10.0.2.nupkg.sha512",

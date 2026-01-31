@@ -34,23 +34,18 @@ public class ProcedureExecutor
         command.CommandType = CommandType.StoredProcedure;
         command.CommandTimeout = timeout;
 
-        var outputParams = new List<SqlParameter>();
+        // Introspect parameters
+        SqlCommandBuilder.DeriveParameters((SqlCommand)command);
 
         if (parameters != null)
         {
             foreach (var param in parameters)
             {
-                var sqlParam = command.CreateParameter();
-                sqlParam.ParameterName = param.Key.StartsWith("@") ? param.Key : "@" + param.Key;
-                sqlParam.Value = param.Value ?? DBNull.Value;
-                
-                // We assume input unless we have more info, but MCP can pass output markers?
-                // For now, let's treat all as input unless they are specifically handled or needed as output
-                // Better approach: if we want to support output, we might need a specific structure for parameters
-                // For MVP, we'll try to detect if we should treat them as InputOutput if we want to support output params
-                // But usually the client doesn't know. Let's stick to standard input and maybe some heuristics.
-                
-                command.Parameters.Add(sqlParam);
+                var paramName = param.Key.StartsWith("@") ? param.Key : "@" + param.Key;
+                if (command.Parameters.Contains(paramName))
+                {
+                    command.Parameters[paramName].Value = param.Value ?? DBNull.Value;
+                }
             }
         }
 

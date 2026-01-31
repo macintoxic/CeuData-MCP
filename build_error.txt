@@ -1,0 +1,15 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos est├úo atualizados para restaura├º├úo.
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Program.cs(68,14): error CS1061: ÔÇÿIConfigurationBuilderÔÇÖ n├úo cont├®m uma defini├º├úo para "AddEnvironmentVariables" e n├úo foi poss├¡vel encontrar nenhum m├®todo de extens├úo "AddEnvironmentVariables" que aceite um primeiro argumento do tipo ÔÇÿIConfigurationBuilderÔÇÖ (voc├¬ est├í se esquecendo de usar uma diretiva ou uma refer├¬ncia de assembly?) [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Services\QueryExecutor.cs(84,24): warning CS8601: Poss├¡vel atribui├º├úo de refer├¬ncia nula. [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Services\ProcedureExecutor.cs(122,24): warning CS8601: Poss├¡vel atribui├º├úo de refer├¬ncia nula. [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+
+FALHA da compila├º├úo.
+
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Services\QueryExecutor.cs(84,24): warning CS8601: Poss├¡vel atribui├º├úo de refer├¬ncia nula. [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Services\ProcedureExecutor.cs(122,24): warning CS8601: Poss├¡vel atribui├º├úo de refer├¬ncia nula. [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\Program.cs(68,14): error CS1061: ÔÇÿIConfigurationBuilderÔÇÖ n├úo cont├®m uma defini├º├úo para "AddEnvironmentVariables" e n├úo foi poss├¡vel encontrar nenhum m├®todo de extens├úo "AddEnvironmentVariables" que aceite um primeiro argumento do tipo ÔÇÿIConfigurationBuilderÔÇÖ (voc├¬ est├í se esquecendo de usar uma diretiva ou uma refer├¬ncia de assembly?) [Z:\Projetos\sharp-mssql-mcp\src\SharpMssqlMcp\SharpMssqlMcp.csproj]
+    2 Aviso(s)
+    1 Erro(s)
+
+Tempo Decorrido 00:00:00.96
