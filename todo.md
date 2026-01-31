@@ -45,11 +45,11 @@
   - [x] Handle missing variables with clear error messages
   - [x] Unit test substitution logic
 
-- [ ] **STEP 7**: Load Configuration on Startup
-  - [ ] Use ConfigurationBuilder to load appsettings.json
-  - [ ] Apply environment variable substitution to connection strings
-  - [ ] Validate: each datasource has matching connection string
-  - [ ] Log loaded datasources
+- [x] **STEP 7**: Load Configuration on Startup
+  - [x] Use ConfigurationBuilder to load appsettings.json
+  - [x] Apply environment variable substitution to connection strings
+  - [x] Validate: each datasource has matching connection string
+  - [x] Log loaded datasources
 
 - [ ] **STEP 8**: Sample Configuration Files
   - [ ] Create appsettings.json with 2 datasources

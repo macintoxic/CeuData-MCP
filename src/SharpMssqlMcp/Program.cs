@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using SharpMssqlMcp.Models;
+using SharpMssqlMcp.Services;
 using SharpMssqlMcp.Tools;
 
 namespace SharpMssqlMcp;
@@ -7,12 +9,10 @@ namespace SharpMssqlMcp;
 class Program
 {
     private static readonly Dictionary<string, IToolHandler> _tools = new();
+    private static AppConfig _config = new();
 
     static async Task Main(string[] args)
     {
-        // Register tools
-        RegisterTool(new EchoToolHandler());
-
         var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (sender, e) =>
         {
@@ -24,6 +24,9 @@ class Program
 
         try
         {
+            LoadConfiguration();
+            RegisterTools();
+
             while (!cts.Token.IsCancellationRequested)
             {
                 var line = await Console.In.ReadLineAsync(cts.Token);
@@ -47,6 +50,51 @@ class Program
         {
             await Console.Error.WriteLineAsync("Sharp MSSQL MCP Server stopped.");
         }
+    }
+
+    private static void LoadConfiguration()
+    {
+        var configBuilder = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables();
+
+        var configuration = configBuilder.Build();
+        _config = configuration.Get<AppConfig>() ?? throw new InvalidOperationException("Failed to load configuration.");
+
+        var substitutor = new EnvironmentSubstitutor();
+
+        // Apply environment variable substitution to connection strings
+        foreach (var key in _config.ConnectionStrings.Keys.ToList())
+        {
+            try
+            {
+                _config.ConnectionStrings[key] = substitutor.Substitute(_config.ConnectionStrings[key]);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Warning: Failed to substitute environment variables in connection string '{key}': {ex.Message}");
+                // We don't throw here to allow other datasources to work if possible
+            }
+        }
+
+        // Validate DataSources
+        foreach (var ds in _config.DataSources)
+        {
+            if (!_config.ConnectionStrings.ContainsKey(ds.Value.ConnectionStringKey))
+            {
+                Console.Error.WriteLine($"Warning: DataSource '{ds.Key}' references missing ConnectionStringKey '{ds.Value.ConnectionStringKey}'");
+            }
+            else
+            {
+                Console.Error.WriteLine($"Loaded DataSource: {ds.Key} ({ds.Value.Description})");
+            }
+        }
+    }
+
+    private static void RegisterTools()
+    {
+        RegisterTool(new EchoToolHandler());
     }
 
     private static void RegisterTool(IToolHandler tool)
@@ -92,7 +140,6 @@ class Program
                     break;
 
                 case "notifications/initialized":
-                    // Nothing to return for notifications
                     return;
 
                 default:

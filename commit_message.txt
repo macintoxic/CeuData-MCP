@@ -1,6 +1,7 @@
-feat: implement environment variable substitution service
+feat: implement configuration loading and validation on startup
 
-- Created EnvironmentSubstitutor service with Regex-based ${VAR} replacement
-- Added error handling for missing environment variables
-- Implemented unit tests covering successful substitution, missing variables, and strings without variables
-- Verified all tests pass with dotnet test
+- Integrated Microsoft.Extensions.Configuration with Json and Binder
+- Implemented LoadConfiguration() in Program.cs
+- Added environment variable substitution to connection strings during load
+- Implemented datasource validation and logging to stderr
+- Added Microsoft.Extensions.Configuration.Binder dependency
