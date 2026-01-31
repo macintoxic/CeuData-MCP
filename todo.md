@@ -61,16 +61,16 @@
 ## ITERATION 3: SQL SERVER CONNECTION MANAGEMENT
 
 ### Phase 4: Connection Management & Query Execution
-- [ ] **STEP 9**: ConnectionManager Class
-  - [ ] Create Services/ConnectionManager.cs
-  - [ ] Implement GetConnection(dataSourceName) method
-  - [ ] Add error handling for invalid datasources
-  - [ ] Test connection opening
+- [x] **STEP 9**: ConnectionManager Class
+  - [x] Create Services/ConnectionManager.cs
+  - [x] Implement GetConnection(dataSourceName) method
+  - [x] Add error handling for invalid datasources
+  - [x] Test connection opening
 
-- [ ] **STEP 10**: Connection Validation on Startup
-  - [ ] Test each datasource connection at startup
-  - [ ] Log success/failure status for each datasource
-  - [ ] Continue startup even if some connections fail
+- [x] **STEP 10**: Connection Validation on Startup
+  - [x] Test each datasource connection at startup
+  - [x] Log success/failure status for each datasource
+  - [x] Continue startup even if some connections fail
 
 - [ ] **STEP 11**: Query Executor - Basic SELECT
   - [ ] Create Services/QueryExecutor.cs

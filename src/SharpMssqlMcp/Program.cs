@@ -10,6 +10,7 @@ class Program
 {
     private static readonly Dictionary<string, IToolHandler> _tools = new();
     private static AppConfig _config = new();
+    private static ConnectionManager? _connectionManager;
 
     static async Task Main(string[] args)
     {
@@ -25,6 +26,8 @@ class Program
         try
         {
             LoadConfiguration();
+            _connectionManager = new ConnectionManager(_config);
+            await ValidateConnectionsAsync();
             RegisterTools();
 
             while (!cts.Token.IsCancellationRequested)
@@ -88,6 +91,34 @@ class Program
             else
             {
                 Console.Error.WriteLine($"Loaded DataSource: {ds.Key} ({ds.Value.Description})");
+            }
+        }
+    }
+
+    private static async Task ValidateConnectionsAsync()
+    {
+        if (_connectionManager == null) return;
+
+        await Console.Error.WriteLineAsync("Validating datasource connections...");
+
+        foreach (var dsName in _config.DataSources.Keys)
+        {
+            try
+            {
+                using var connection = _connectionManager.GetConnection(dsName);
+                // We use a short timeout for startup validation
+                var builder = new SqlConnectionStringBuilder(connection.ConnectionString)
+                {
+                    ConnectTimeout = 5 
+                };
+                connection.ConnectionString = builder.ConnectionString;
+
+                await connection.OpenAsync();
+                await Console.Error.WriteLineAsync($"[OK] {dsName}: Connection successful.");
+            }
+            catch (Exception ex)
+            {
+                await Console.Error.WriteLineAsync($"[FAIL] {dsName}: {ex.Message}");
             }
         }
     }
