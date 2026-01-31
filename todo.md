@@ -9,11 +9,11 @@
   - [x] Create folder structure: /Models, /Services, /Tools, /Tests
   - [x] Verify builds with `dotnet build`
 
-- [ ] **STEP 2**: Implement Basic Stdio Loop
-  - [ ] Create Program.cs main loop that reads Console.In line by line
-  - [ ] Parse each line as JSON using System.Text.Json
-  - [ ] Write response to Console.Out
-  - [ ] Handle Ctrl+C gracefully
+- [x] **STEP 2**: Implement Basic Stdio Loop
+  - [x] Create Program.cs main loop that reads Console.In line by line
+  - [x] Parse each line as JSON using System.Text.Json
+  - [x] Write response to Console.Out
+  - [x] Handle Ctrl+C gracefully
 
 - [ ] **STEP 3**: JSON-RPC 2.0 Models
   - [ ] Create Models/JsonRpc.cs

@@ -1,9 +1,7 @@
-feat: initialize .NET 10 solution and projects
+feat: implement basic stdio loop and request processing
 
-- Created SharpMssqlMcp.sln in root
-- Created src/ directory
-- Created SharpMssqlMcp console project in src/SharpMssqlMcp (.NET 10)
-- Created SharpMssqlMcp.Tests xUnit project in src/SharpMssqlMcp.Tests (.NET 10)
-- Added Microsoft.Data.SqlClient, Configuration, and Logging packages
-- Established project structure (Models, Services, Tools)
-- Verified build status
+- Added main loop in Program.cs using CancellationToken for graceful shutdown
+- Implemented Console.In reading and Console.Out writing
+- Added stderr redirection for logging to prevent stream corruption
+- Integrated basic JSON parsing and response handling
+- Handled Ctrl+C (Console.CancelKeyPress)
