@@ -1,6 +1,7 @@
-feat: add JSON-RPC 2.0 models and helper methods
+feat: implement tool routing and Echo tool for verification
 
-- Defined JsonRpcRequest, JsonRpcResponse, and JsonRpcError models
-- Added JSON serialization attributes for compatibility
-- Implemented static helper methods Success() and Failure() for easy response creation
-- Placed models in Models/JsonRpc.cs
+- Created IToolHandler interface and EchoToolHandler implementation
+- Refactored Program.cs to support MCP protocol methods (initialize, tools/list, tools/call)
+- Added JSON-RPC request/response integration with routing logic
+- Implemented tool registration system
+- Added basic protocol handshake support

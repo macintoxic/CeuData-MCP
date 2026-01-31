@@ -23,11 +23,11 @@
   - [x] Add helper methods for creating responses
 
 ### Phase 2: MCP Protocol Verification
-- [ ] **STEP 4**: Echo Tool (Verification)
-  - [ ] Create Tools/IToolHandler.cs interface
-  - [ ] Create Tools/EchoToolHandler.cs
-  - [ ] Modify Program.cs to route "echo" method
-  - [ ] Test: Send tools/call request and verify response
+- [x] **STEP 4**: Echo Tool (Verification)
+  - [x] Create Tools/IToolHandler.cs interface
+  - [x] Create Tools/EchoToolHandler.cs
+  - [x] Modify Program.cs to route "echo" method
+  - [x] Test: Send tools/call request and verify response
 
 ---
 

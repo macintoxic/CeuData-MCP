@@ -1,11 +1,18 @@
 ﻿using System.Text.Json;
+using SharpMssqlMcp.Models;
+using SharpMssqlMcp.Tools;
 
 namespace SharpMssqlMcp;
 
 class Program
 {
+    private static readonly Dictionary<string, IToolHandler> _tools = new();
+
     static async Task Main(string[] args)
     {
+        // Register tools
+        RegisterTool(new EchoToolHandler());
+
         var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (sender, e) =>
         {
@@ -13,7 +20,6 @@ class Program
             cts.Cancel();
         };
 
-        // Redirect logs to stderr so they don't corrupt the MCP channel (stdout)
         await Console.Error.WriteLineAsync("Sharp MSSQL MCP Server starting...");
 
         try
@@ -34,7 +40,8 @@ class Program
         }
         catch (Exception ex)
         {
-            await Console.Error.WriteLineAsync($"Fatal error: {ex.Message}");
+            await Console.Error.WriteLineAsync($"Fatal error: {ex.GetType().Name}: {ex.Message}");
+            await Console.Error.WriteLineAsync(ex.StackTrace);
         }
         finally
         {
@@ -42,42 +49,105 @@ class Program
         }
     }
 
+    private static void RegisterTool(IToolHandler tool)
+    {
+        _tools[tool.Name] = tool;
+    }
+
     static async Task ProcessRequest(string line, CancellationToken ct)
     {
+        object? requestId = null;
         try
         {
-            // Basic parsing for Step 2
-            using var doc = JsonDocument.Parse(line);
-            var root = doc.RootElement;
+            var request = JsonSerializer.Deserialize<JsonRpcRequest>(line);
+            if (request == null) return;
 
-            // Log the request to stderr for debugging
-            await Console.Error.WriteLineAsync($"Received: {line}");
+            requestId = GetIdValue(request.Id);
 
-            // Basic echo response for now (to be replaced by proper routing in Step 4)
-            if (root.TryGetProperty("id", out var idProp))
+            // Log request method to stderr
+            await Console.Error.WriteLineAsync($"Received method: {request.Method} (ID: {requestId})");
+
+            JsonRpcResponse response;
+
+            switch (request.Method)
             {
-                var response = new
-                {
-                    jsonrpc = "2.0",
-                    id = idProp.ValueKind == JsonValueKind.Number ? (object)idProp.GetInt64() : idProp.GetString(),
-                    result = new { message = "Request received" }
-                };
-                
-                var jsonResponse = JsonSerializer.Serialize(response);
-                await Console.Out.WriteLineAsync(jsonResponse);
+                case "initialize":
+                    response = JsonRpcResponse.Success(requestId, new
+                    {
+                        protocolVersion = "2024-11-05",
+                        capabilities = new { tools = new { } },
+                        serverInfo = new { name = "sharp-mssql-mcp", version = "1.0.0" }
+                    });
+                    break;
+
+                case "tools/list":
+                    response = JsonRpcResponse.Success(requestId, new
+                    {
+                        tools = _tools.Values.Select(t => new { name = t.Name, description = $"Handler for {t.Name}" })
+                    });
+                    break;
+
+                case "tools/call":
+                    response = await HandleToolCall(request, requestId, ct);
+                    break;
+
+                case "notifications/initialized":
+                    // Nothing to return for notifications
+                    return;
+
+                default:
+                    response = JsonRpcResponse.Failure(requestId, -32601, $"Method not found: {request.Method}");
+                    break;
             }
+
+            var jsonResponse = JsonSerializer.Serialize(response);
+            await Console.Out.WriteLineAsync(jsonResponse);
         }
         catch (JsonException ex)
         {
             await Console.Error.WriteLineAsync($"Invalid JSON: {ex.Message}");
-            // Send standard JSON-RPC error
-            var errorResponse = new
-            {
-                jsonrpc = "2.0",
-                error = new { code = -32700, message = "Parse error" },
-                id = (object?)null
-            };
+            var errorResponse = JsonRpcResponse.Failure(null, -32700, "Parse error");
             await Console.Out.WriteLineAsync(JsonSerializer.Serialize(errorResponse));
         }
+        catch (Exception ex)
+        {
+            await Console.Error.WriteLineAsync($"Error processing request: {ex.Message}");
+            var errorResponse = JsonRpcResponse.Failure(requestId, -32603, "Internal error");
+            await Console.Out.WriteLineAsync(JsonSerializer.Serialize(errorResponse));
+        }
+    }
+
+    static async Task<JsonRpcResponse> HandleToolCall(JsonRpcRequest request, object? id, CancellationToken ct)
+    {
+        if (request.Params == null)
+        {
+            return JsonRpcResponse.Failure(id, -32602, "Invalid params: expected object");
+        }
+
+        if (!request.Params.Value.TryGetProperty("name", out var nameProp))
+        {
+            return JsonRpcResponse.Failure(id, -32602, "Missing tool name");
+        }
+
+        var toolName = nameProp.GetString();
+        if (string.IsNullOrEmpty(toolName) || !_tools.TryGetValue(toolName, out var handler))
+        {
+            return JsonRpcResponse.Failure(id, -32602, $"Tool not found: {toolName}");
+        }
+
+        request.Params.Value.TryGetProperty("arguments", out var arguments);
+        return await handler.HandleAsync(arguments, id, ct);
+    }
+
+    private static object? GetIdValue(JsonElement? idElement)
+    {
+        if (idElement == null) return null;
+        var val = idElement.Value;
+        return val.ValueKind switch
+        {
+            JsonValueKind.Number => val.GetInt64(),
+            JsonValueKind.String => val.GetString(),
+            _ => null
+        };
     }
 }
