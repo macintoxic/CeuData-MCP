@@ -51,10 +51,10 @@
   - [x] Validate: each datasource has matching connection string
   - [x] Log loaded datasources
 
-- [ ] **STEP 8**: Sample Configuration Files
-  - [ ] Create appsettings.json with 2 datasources
-  - [ ] Create .env.example template
-  - [ ] Add .env to .gitignore
+- [x] **STEP 8**: Sample Configuration Files
+  - [x] Create appsettings.json with 2 datasources (Used 3 from spec)
+  - [x] Create .env.example template
+  - [x] Add .env to .gitignore
 
 ---
 
