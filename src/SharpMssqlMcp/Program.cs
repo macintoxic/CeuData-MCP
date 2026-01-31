@@ -12,6 +12,7 @@ class Program
     private static AppConfig _config = new();
     private static ConnectionManager? _connectionManager;
     private static QueryExecutor? _queryExecutor;
+    private static ProcedureExecutor? _procedureExecutor;
 
     static async Task Main(string[] args)
     {
@@ -29,6 +30,7 @@ class Program
             LoadConfiguration();
             _connectionManager = new ConnectionManager(_config);
             _queryExecutor = new QueryExecutor(_connectionManager);
+            _procedureExecutor = new ProcedureExecutor(_connectionManager);
             await ValidateConnectionsAsync();
             RegisterTools();
 
@@ -131,6 +133,10 @@ class Program
         if (_queryExecutor != null)
         {
             RegisterTool(new ExecuteQueryToolHandler(_queryExecutor));
+        }
+        if (_procedureExecutor != null)
+        {
+            RegisterTool(new ExecuteProcedureToolHandler(_procedureExecutor));
         }
     }
 

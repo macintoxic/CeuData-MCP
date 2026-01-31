@@ -1,8 +1,8 @@
-feat: implement execute_query tool and error handling
+feat: implement stored procedure execution tool
 
-- Created ExecuteQueryToolHandler for MCP protocol integration
-- Implemented robust argument parsing for SQL queries and parameters
-- Added ErrorCodes and ErrorResponseBuilder for structured database errors
-- Mapped common SqlException numbers to user-friendly error messages
-- Registered execute_query tool in Program.cs
-- Completed ITERATION 4 of the implementation plan
+- Created ProcedureExecutor service supporting multiple result sets and output parameters
+- Implemented ExecuteProcedureToolHandler for MCP integration
+- Added support for capturing multiple data sets via SqlDataReader.NextResult()
+- Implemented output parameter and return value extraction
+- Registered execute_procedure tool in Program.cs
+- Completed ITERATION 5 of the implementation plan
