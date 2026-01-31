@@ -72,18 +72,18 @@
   - [x] Log success/failure status for each datasource
   - [x] Continue startup even if some connections fail
 
-- [ ] **STEP 11**: Query Executor - Basic SELECT
-  - [ ] Create Services/QueryExecutor.cs
-  - [ ] Implement ExecuteQuery method with parameterized queries
-  - [ ] Create QueryResult class (Data, RowsAffected, Metadata)
-  - [ ] Map rows to List<Dictionary<string, object>>
-  - [ ] Apply maxRows limit
+- [x] **STEP 11**: Query Executor - Basic SELECT
+  - [x] Create Services/QueryExecutor.cs
+  - [x] Implement ExecuteQuery method with parameterized queries
+  - [x] Create QueryResult class (Data, RowsAffected, Metadata)
+  - [x] Map rows to List<Dictionary<string, object>>
+  - [x] Apply maxRows limit
 
-- [ ] **STEP 12**: Extract Column Metadata
-  - [ ] Use SqlDataReader.GetSchemaTable() for metadata
-  - [ ] Create ColumnMetadata class (Name, Type, Nullable)
-  - [ ] Map SQL Server types to string names
-  - [ ] Include column metadata in QueryResult
+- [x] **STEP 12**: Extract Column Metadata
+  - [x] Use SqlDataReader.GetSchemaTable() for metadata (Used GetColumnSchema() for better compatibility)
+  - [x] Create ColumnMetadata class (Name, Type, Nullable)
+  - [x] Map SQL Server types to string names
+  - [x] Include column metadata in QueryResult
 
 ---
 
