@@ -281,5 +281,45 @@ After completing all steps:
 
 ---
 
-**Last Updated:** 2026-01-31
-**Status:** COMPLETED ✅
+**Last Updated:** 2026-02-02
+**Status:** IN PROGRESS [/]
+
+---
+
+## ITERATION 9: POSTGRESQL SUPPORT
+
+### Phase 1: Infrastructure & Abstractions
+- [/] **STEP 29**: Project Infrastructure
+  - [x] Add `Npgsql` NuGet package to `SharpMssqlMcp` and `SharpMssqlMcp.Tests`
+  - [x] Update `DataSourceConfig` model with `Provider` property
+  - [x] Update `appsettings.json` with PostgreSQL sample data
+- [/] **STEP 30**: Database Abstractions (SOLID)
+  - [x] Create `IDbStrategy.cs` interface
+  - [x] Create `DbProviderFactory.cs` for connection/strategy creation
+  - [x] Create `SqlServerStrategy.cs` (initial migration of SQL logic)
+
+### Phase 2: Refactoring & Open/Closed Principle
+- [ ] **STEP 31**: Refactor Connection Management
+  - [ ] Update `ConnectionManager` to return `DbConnection`
+  - [ ] Decouple `ConnectionManager` from `SqlConnection`
+- [ ] **STEP 32**: Refactor Query & Procedure Executors
+  - [ ] Update `QueryExecutor` to use `IDbStrategy`
+  - [ ] Update `ProcedureExecutor` to use `IDbStrategy`
+  - [ ] Ensure DRY between providers
+
+### Phase 3: PostgreSQL Implementation
+- [ ] **STEP 33**: PostgreSql Strategy
+  - [ ] Implement `PostgreSqlStrategy.cs`
+  - [ ] Handle parameter prefix differences (`$1`, `$2` or `:name`)
+  - [ ] Implement metadata extraction for Postgres
+- [ ] **STEP 34**: Wiring & Di
+  - [ ] Update `Program.cs` to handle provider-based tool registration
+  - [ ] Verify `get_datasources` tool for Postgres
+
+### Phase 4: Verification & Integration
+- [ ] **STEP 35**: PostgreSQL Test Environment
+  - [ ] Update `docker-compose.yml` with Postgres service
+  - [ ] Create `Tests/setup-postgres-db.sql`
+- [ ] **STEP 36**: Integration Tests
+  - [ ] Implement `ExecuteQueryPostgresTests.cs`
+  - [ ] Implement `ExecuteProcedurePostgresTests.cs`
