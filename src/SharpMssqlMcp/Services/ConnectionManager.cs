@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using SharpMssqlMcp.Models;
 
@@ -12,7 +13,7 @@ public class ConnectionManager
         _config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
-    public SqlConnection GetConnection(string dataSourceName)
+    public (DbConnection Connection, IDataSourceProvider Provider) GetConnection(string dataSourceName)
     {
         if (string.IsNullOrEmpty(dataSourceName))
         {
@@ -29,6 +30,28 @@ public class ConnectionManager
             throw new KeyNotFoundException($"ConnectionStringKey '{dsConfig.ConnectionStringKey}' referenced by DataSource '{dataSourceName}' not found.");
         }
 
-        return new SqlConnection(connectionString);
+        var strategy = DbProviderFactory.GetStrategy(dsConfig.Provider);
+        return (strategy.CreateConnection(connectionString), new DataSourceProvider { Strategy = strategy, Name = dataSourceName });
     }
+
+    public IDbStrategy GetStrategy(string dataSourceName)
+    {
+        if (!_config.DataSources.TryGetValue(dataSourceName, out var dsConfig))
+        {
+            throw new KeyNotFoundException($"DataSource '{dataSourceName}' not found in configuration.");
+        }
+        return DbProviderFactory.GetStrategy(dsConfig.Provider);
+    }
+}
+
+public interface IDataSourceProvider
+{
+    IDbStrategy Strategy { get; }
+    string Name { get; }
+}
+
+public class DataSourceProvider : IDataSourceProvider
+{
+    public required IDbStrategy Strategy { get; init; }
+    public required string Name { get; init; }
 }

@@ -14,6 +14,27 @@ public class ExecuteQueryToolHandler : IToolHandler
     }
 
     public string Name => "execute_query";
+    public string Description => "Executes a SQL query on a specific data source.";
+    public object InputSchema => new
+    {
+        type = "object",
+        properties = new
+        {
+            dataSource = new { type = "string", description = "The name of the data source to execute the query/procedure on." },
+            query = new { type = "string", description = "The SQL query to execute." },
+            parameters = new { type = "object", description = "Optional parameters for the query." },
+            options = new
+            {
+                type = "object",
+                properties = new
+                {
+                    maxRows = new { type = "integer", description = "Maximum number of rows to return." },
+                    timeout = new { type = "integer", description = "Command timeout in seconds." }
+                }
+            }
+        },
+        required = new[] { "dataSource", "query" }
+    };
 
     public async Task<JsonRpcResponse> HandleAsync(JsonElement? arguments, object? id, CancellationToken ct)
     {
@@ -68,7 +89,21 @@ public class ExecuteQueryToolHandler : IToolHandler
         {
             RequestValidator.ValidateQuery(query, parameters, timeout);
             var result = await _queryExecutor.ExecuteQueryAsync(dataSource, query, parameters, maxRows, timeout, ct);
-            return JsonRpcResponse.Success(id, result);
+            
+            // Wrap result in MCP format
+            var mcpResult = new
+            {
+                content = new[]
+                {
+                    new 
+                    { 
+                        type = "text", 
+                        text = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }) 
+                    }
+                }
+            };
+            
+            return JsonRpcResponse.Success(id, mcpResult);
         }
         catch (Exception ex)
         {

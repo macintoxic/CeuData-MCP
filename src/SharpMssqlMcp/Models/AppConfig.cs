@@ -10,5 +10,6 @@ public class DataSourceConfig
 {
     public string Description { get; set; } = string.Empty;
     public string ConnectionStringKey { get; set; } = string.Empty;
+    public string Provider { get; set; } = "SqlServer"; // Default to SqlServer for backward compatibility
     public int CommandTimeout { get; set; } = 300;
 }

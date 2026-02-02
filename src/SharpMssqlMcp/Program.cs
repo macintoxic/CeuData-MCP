@@ -28,6 +28,7 @@ class Program
 
         try
         {
+            
             LoadConfiguration();
             _connectionManager = new ConnectionManager(_config);
             _queryExecutor = new QueryExecutor(_connectionManager);
@@ -110,16 +111,19 @@ class Program
         {
             try
             {
-                using var connection = _connectionManager.GetConnection(dsName);
-                // We use a short timeout for startup validation
-                var builder = new SqlConnectionStringBuilder(connection.ConnectionString)
+                var (connection, _) = _connectionManager.GetConnection(dsName);
+                using (connection)
                 {
-                    ConnectTimeout = 5 
-                };
-                connection.ConnectionString = builder.ConnectionString;
+                    // We use a short timeout for startup validation
+                    var builder = new SqlConnectionStringBuilder(connection.ConnectionString)
+                    {
+                        ConnectTimeout = 5 
+                    };
+                    connection.ConnectionString = builder.ConnectionString;
 
-                await connection.OpenAsync();
-                await Console.Error.WriteLineAsync($"[OK] {dsName}: Connection successful.");
+                    await connection.OpenAsync();
+                    await Console.Error.WriteLineAsync($"[OK] {dsName}: Connection successful.");
+                }
             }
             catch (Exception ex)
             {
@@ -176,7 +180,12 @@ class Program
                 case "tools/list":
                     response = JsonRpcResponse.Success(requestId, new
                     {
-                        tools = _tools.Values.Select(t => new { name = t.Name, description = $"Handler for {t.Name}" })
+                        tools = _tools.Values.Select(t => new 
+                        { 
+                            name = t.Name, 
+                            description = t.Description,
+                            inputSchema = t.InputSchema
+                        })
                     });
                     break;
 

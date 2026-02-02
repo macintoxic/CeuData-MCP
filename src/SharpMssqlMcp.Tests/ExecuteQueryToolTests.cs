@@ -58,11 +58,23 @@ public class ExecuteQueryToolTests : IDisposable
 
         // Assert
         Assert.Null(response.Error);
-        var result = Assert.IsType<QueryResult>(response.Result);
-        Assert.True(result.Success);
-        Assert.NotEmpty(result.Data);
-        Assert.All(result.Data, row => Assert.Equal("Active", row["Status"]?.ToString()));
-        Assert.Contains(result.Metadata.Columns, c => c.Name == "Name");
+        
+        var json = JsonSerializer.Serialize(response.Result);
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            var text = doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString();
+            var result = JsonSerializer.Deserialize<QueryResult>(text!);
+
+            Assert.True(result!.Success);
+            Assert.NotEmpty(result.Data);
+            Assert.All(result.Data, row => Assert.Equal("Active", row["Status"]?.ToString()));
+            Assert.Contains(result.Metadata.Columns, c => c.Name == "Name");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to parse JSON: {json}", ex);
+        }
     }
 
     [Fact]
@@ -80,8 +92,12 @@ public class ExecuteQueryToolTests : IDisposable
         var response = await _handler.HandleAsync(args, 2, CancellationToken.None);
 
         // Assert
-        var result = Assert.IsType<QueryResult>(response.Result);
-        Assert.Equal(2, result.Data.Count);
+        var json = JsonSerializer.Serialize(response.Result);
+        using var doc = JsonDocument.Parse(json);
+        var text = doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString();
+        var result = JsonSerializer.Deserialize<QueryResult>(text!);
+
+        Assert.Equal(2, result!.Data.Count);
     }
 
     [Fact]
@@ -100,14 +116,6 @@ public class ExecuteQueryToolTests : IDisposable
         // Assert
         Assert.NotNull(response.Error);
         Assert.Equal(ErrorCodes.InternalJsonRpcError, response.Error.Code);
-        
-        var errorData = (dynamic)response.Error.Data!;
-        // In anonymous types from deserialized JSON, we might need a different way to check properties if it's not strongly typed
-        // But since we are in the same process, it might be the anonymous object itself or a JsonElement depending on how it was returned.
-        // Actually, ErrorResponseBuilder returns an anonymous object.
-        
-        // Let's use reflection or just check the serialized version if needed, 
-        // but here we can just inspect the properties.
     }
 
     public void Dispose()

@@ -46,18 +46,22 @@ public class GetDataSourcesToolTests : IDisposable
         var result = (dynamic)response.Result!;
         
         // Since Result is an object with a dataSources property, we need to handle it.
-        // In our implementation it's: new { dataSources }
+        // In our implementation it's: { content: [ { type: "text", text: "{ \"dataSources\": [...] }" } ] }
         
         var json = JsonSerializer.Serialize(response.Result);
         using var doc = JsonDocument.Parse(json);
-        var dataSources = doc.RootElement.GetProperty("dataSources");
+        var contentArray = doc.RootElement.GetProperty("content");
+        var text = contentArray[0].GetProperty("text").GetString();
+        
+        using var resultDoc = JsonDocument.Parse(text!);
+        var dataSources = resultDoc.RootElement.GetProperty("dataSources");
 
         Assert.True(dataSources.GetArrayLength() >= 1);
         
         bool foundTest = false;
         foreach (var ds in dataSources.EnumerateArray())
         {
-            if (ds.GetProperty("name").GetString() == "test")
+            if (ds.GetProperty("name").GetString() == "test") // Updated from 'gemini_test'
             {
                 foundTest = true;
                 Assert.Equal("connected", ds.GetProperty("status").GetString());

@@ -14,6 +14,27 @@ public class ExecuteProcedureToolHandler : IToolHandler
     }
 
     public string Name => "execute_procedure";
+    public string Description => "Executes a stored procedure on a specific data source.";
+    public object InputSchema => new
+    {
+        type = "object",
+        properties = new
+        {
+            dataSource = new { type = "string", description = "The name of the data source to execute the query/procedure on." },
+            procedure = new { type = "string", description = "The name of the stored procedure to execute." },
+            parameters = new { type = "object", description = "Optional parameters for the procedure (input and output)." },
+            options = new
+            {
+                type = "object",
+                properties = new
+                {
+                    timeout = new { type = "integer", description = "Command timeout in seconds." },
+                    includeOutputParameters = new { type = "boolean", description = "Whether to include output parameters in the result." }
+                }
+            }
+        },
+        required = new[] { "dataSource", "procedure" }
+    };
 
     public async Task<JsonRpcResponse> HandleAsync(JsonElement? arguments, object? id, CancellationToken ct)
     {
@@ -69,7 +90,21 @@ public class ExecuteProcedureToolHandler : IToolHandler
         {
             RequestValidator.ValidateProcedure(procedure, timeout);
             var result = await _procedureExecutor.ExecuteProcedureAsync(dataSource, procedure, parameters, timeout, includeOutputParameters, ct);
-            return JsonRpcResponse.Success(id, result);
+            
+            // Wrap result in MCP format
+            var mcpResult = new
+            {
+                content = new[]
+                {
+                    new 
+                    { 
+                        type = "text", 
+                        text = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }) 
+                    }
+                }
+            };
+
+            return JsonRpcResponse.Success(id, mcpResult);
         }
         catch (Exception ex)
         {

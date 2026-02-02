@@ -1,5 +1,4 @@
 using System.Text.Json;
-using Microsoft.Data.SqlClient;
 using SharpMssqlMcp.Models;
 using SharpMssqlMcp.Services;
 
@@ -17,6 +16,13 @@ public class GetDataSourcesToolHandler : IToolHandler
     }
 
     public string Name => "get_datasources";
+    public string Description => "Returns a list of configured data sources.";
+    public object InputSchema => new
+    {
+        type = "object",
+        properties = new { },
+        required = new string[] { }
+    };
 
     public async Task<JsonRpcResponse> HandleAsync(JsonElement? arguments, object? id, CancellationToken ct)
     {
@@ -33,19 +39,17 @@ public class GetDataSourcesToolHandler : IToolHandler
 
             try
             {
-                using var connection = _connectionManager.GetConnection(dsName);
-                var builder = new SqlConnectionStringBuilder(connection.ConnectionString);
-                server = builder.DataSource;
-                database = builder.InitialCatalog;
-
-                // Simple ping
-                var validationBuilder = new SqlConnectionStringBuilder(connection.ConnectionString)
+                var (connection, provider) = _connectionManager.GetConnection(dsName);
+                using (connection)
                 {
-                    ConnectTimeout = 2
-                };
-                using var validationConn = new SqlConnection(validationBuilder.ConnectionString);
-                await validationConn.OpenAsync(ct);
-                status = "connected";
+                    var info = provider.Strategy.GetConnectionStringInfo(connection.ConnectionString);
+                    server = info.Server;
+                    database = info.Database;
+
+                    // Simple ping - reuse the connection we just created or open it
+                    await connection.OpenAsync(ct);
+                    status = "connected";
+                }
             }
             catch (Exception ex)
             {
@@ -64,6 +68,18 @@ public class GetDataSourcesToolHandler : IToolHandler
             });
         }
 
-        return JsonRpcResponse.Success(id, new { dataSources });
+        var mcpResult = new
+        {
+            content = new[]
+            {
+                new 
+                { 
+                    type = "text", 
+                    text = JsonSerializer.Serialize(new { dataSources }, new JsonSerializerOptions { WriteIndented = true }) 
+                }
+            }
+        };
+
+        return JsonRpcResponse.Success(id, mcpResult);
     }
 }

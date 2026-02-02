@@ -53,8 +53,13 @@ public class ExecuteProcedureToolTests : IDisposable
 
         // Assert
         Assert.Null(response.Error);
-        var result = Assert.IsType<ProcedureResult>(response.Result);
-        Assert.True(result.Success);
+        
+        var json = JsonSerializer.Serialize(response.Result);
+        using var doc = JsonDocument.Parse(json);
+        var text = doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString();
+        var result = JsonSerializer.Deserialize<ProcedureResult>(text!);
+
+        Assert.True(result!.Success);
         Assert.Single(result.ResultSets);
         Assert.Equal("John Doe", result.ResultSets[0].Data[0]["Name"]?.ToString());
     }
@@ -75,8 +80,13 @@ public class ExecuteProcedureToolTests : IDisposable
 
         // Assert
         Assert.Null(response.Error);
-        var result = Assert.IsType<ProcedureResult>(response.Result);
-        Assert.Equal(2, result.ResultSets.Count);
+        
+        var json = JsonSerializer.Serialize(response.Result);
+        using var doc = JsonDocument.Parse(json);
+        var text = doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString();
+        var result = JsonSerializer.Deserialize<ProcedureResult>(text!);
+
+        Assert.Equal(2, result!.ResultSets.Count);
         Assert.Equal("ResultSet1", result.ResultSets[0].Name);
         Assert.Equal("ResultSet2", result.ResultSets[1].Name);
         Assert.NotEmpty(result.ResultSets[1].Data);
@@ -94,21 +104,18 @@ public class ExecuteProcedureToolTests : IDisposable
             options = new { includeOutputParameters = true }
         })).RootElement;
 
-        // Note: Our current ProcedureExecutor logic for output params is a bit limited 
-        // because it doesn't know which params are output without introspection.
-        // Let's see if we can improve ProcedureExecutor to handle this by checking the parameter dictionary 
-        // if we want to support output params better.
-        // Actually, the current code just checks p.Direction. 
-        // I need to update ProcedureExecutor to set ParameterDirection.InputOutput for all parameters by default 
-        // to allow them to be captured as results, OR use introspection.
-        
         // Act
         var response = await _handler.HandleAsync(args, 3, CancellationToken.None);
 
         // Assert
         Assert.Null(response.Error);
-        var result = Assert.IsType<ProcedureResult>(response.Result);
-        Assert.True(result.OutputParameters.ContainsKey("@count"));
+        
+        var json = JsonSerializer.Serialize(response.Result);
+        using var doc = JsonDocument.Parse(json);
+        var text = doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString();
+        var result = JsonSerializer.Deserialize<ProcedureResult>(text!);
+
+        Assert.True(result!.OutputParameters.ContainsKey("@count"));
         Assert.Equal(3, Convert.ToInt32(result.OutputParameters["@count"]));
     }
 

@@ -1,6 +1,5 @@
-using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
-using Microsoft.Data.SqlClient;
 using SharpMssqlMcp.Models;
 
 namespace SharpMssqlMcp.Services;
@@ -25,67 +24,53 @@ public class QueryExecutor
         var result = new QueryResult();
         var sw = Stopwatch.StartNew();
 
-        using var connection = _connectionManager.GetConnection(dataSourceName);
-        await RetryPolicy.ExecuteAsync(async () => await connection.OpenAsync(ct), ct);
-
-        using var command = connection.CreateCommand();
-        command.CommandText = query;
-        command.CommandTimeout = timeout;
-
-        if (parameters != null)
+        var (connection, provider) = _connectionManager.GetConnection(dataSourceName);
+        using (connection)
         {
-            foreach (var param in parameters)
+            await RetryPolicy.ExecuteAsync(async () => await connection.OpenAsync(ct), ct);
+
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.CommandTimeout = timeout;
+
+            if (parameters != null)
             {
-                var sqlParam = command.CreateParameter();
-                sqlParam.ParameterName = param.Key.StartsWith("@") ? param.Key : "@" + param.Key;
-                sqlParam.Value = param.Value ?? DBNull.Value;
-                command.Parameters.Add(sqlParam);
+                foreach (var param in parameters)
+                {
+                    var dbParam = command.CreateParameter();
+                    var prefix = provider.Strategy.ParameterPrefix;
+                    dbParam.ParameterName = param.Key.StartsWith(prefix) ? param.Key : prefix + param.Key;
+                    dbParam.Value = param.Value ?? DBNull.Value;
+                    command.Parameters.Add(dbParam);
+                }
             }
-        }
 
-        using var reader = await command.ExecuteReaderAsync(ct);
-        
-        // Extract metadata
-        result.Metadata.Columns = GetColumnMetadata(reader);
+            using var reader = await command.ExecuteReaderAsync(ct);
+            
+            // Extract metadata using strategy
+            result.Metadata.Columns = provider.Strategy.GetColumnMetadata(reader);
 
-        // Read data
-        int count = 0;
-        while (count < maxRows && await reader.ReadAsync(ct))
-        {
-            var row = new Dictionary<string, object?>();
-            for (int i = 0; i < reader.FieldCount; i++)
+            // Read data
+            int count = 0;
+            while (count < maxRows && await reader.ReadAsync(ct))
             {
-                var value = reader.GetValue(i);
-                row[reader.GetName(i)] = value == DBNull.Value ? null : value;
+                var row = new Dictionary<string, object?>();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    var value = reader.GetValue(i);
+                    row[reader.GetName(i)] = value == DBNull.Value ? null : value;
+                }
+                result.Data.Add(row);
+                count++;
             }
-            result.Data.Add(row);
-            count++;
-        }
 
-        result.RowsAffected = reader.RecordsAffected;
-        result.Success = true;
+            result.RowsAffected = reader.RecordsAffected;
+            result.Success = true;
+        }
         
         sw.Stop();
         result.Metadata.ExecutionTimeMs = sw.ElapsedMilliseconds;
 
         return result;
-    }
-
-    private List<ColumnMetadata> GetColumnMetadata(SqlDataReader reader)
-    {
-        var columns = new List<ColumnMetadata>();
-        var schemaTable = reader.GetColumnSchema();
-
-        foreach (var column in schemaTable)
-        {
-            columns.Add(new ColumnMetadata
-            {
-                Name = column.ColumnName,
-                Type = column.DataTypeName,
-                Nullable = column.AllowDBNull ?? true
-            });
-        }
-
-        return columns;
     }
 }
